@@ -17,5 +17,8 @@
     "mycha": "^0.9.1",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0"
+  },
+  "dependencies": {
+    "robust-callbacks": "0.0.5"
   }
 }

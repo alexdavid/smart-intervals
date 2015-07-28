@@ -1,13 +1,19 @@
+roca = require 'robust-callbacks'
+
+
 class SmartInterval
 
   constructor: (@function, @time) ->
     @_timeOut = null
+    @_stopped = no
     @_postRunCallbacks = []
     @_setTimeout()
 
 
   stop: (done) ->
-    if @_waitingForTimeout()
+    @_stopped = yes
+
+    if @_timeOut?
       @_clearTimeout()
       done?()
     else
@@ -16,7 +22,8 @@ class SmartInterval
 
   runNow: (done) ->
     @_postRunCallbacks.push done
-    if @_waitingForTimeout()
+
+    if @_timeOut?
       @_clearTimeout()
       @_runFunction()
 
@@ -28,18 +35,15 @@ class SmartInterval
 
   _runFunction: =>
     @_timeOut = null
-    @function.call {}, =>
+    @function.call {}, roca =>
       cb?() for cb in @_postRunCallbacks
       @_postRunCallbacks = []
+      return if @_stopped
       @_setTimeout()
 
 
   _setTimeout: ->
-    throw Error 'SmartInterval: timeout already set' if @_waitingForTimeout()
     @_timeOut = setTimeout @_runFunction, @time
-
-
-  _waitingForTimeout: -> @_timeOut?
 
 
 module.exports = (ms, fn) -> new SmartInterval fn, ms

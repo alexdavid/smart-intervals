@@ -69,6 +69,13 @@ describe 'smartInterval', ->
         @clock.tick 999
         @fn.callArg 0
 
+      it 'stops future calls', ->
+        expect(@fn).to.have.been.calledOnce
+        @interval.stop()
+        @fn.callArg 0
+        @clock.tick 999
+        expect(@fn).to.have.been.calledOnce
+
 
 
   describe '#runNow', ->
