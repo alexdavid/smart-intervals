@@ -1,4 +1,4 @@
-# Smart Intervals
+# Smart Intervals [![Circle CI](https://circleci.com/gh/alexdavid/smart-intervals/tree/master.svg?style=svg)](https://circleci.com/gh/alexdavid/smart-intervals/tree/master)
 
 `setInterval` replacement for asynchronous tasks
 
